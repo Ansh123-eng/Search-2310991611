@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Engine</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-RusK5TYIDM3YHLmxtYAGFEjvpIwIQOwTiw&s");
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-size: cover;
+      }
+
+      .container {
+        background-color: lightgrey;
+        padding: 20px;
+        border-radius: 8px;
+        height: 60%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      input[type="text"] {
+        width: 80%;
+        padding: 15px;
+        margin-bottom: 10px;
+      }
+      input[type="text"]:focus {
+        background-color: #eaeaea;
+      }
+
+      button {
+        padding: 10px;
+        margin: 5px;
+        cursor: pointer;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      ul li {
+        background-color: #eaeaea;
+        padding: 8px;
+        margin: 4px 0;
+        border-radius: 5px;
+      }
+      #search {
+        border: solid lightblue;
+      }
+      #history {
+        border: solid lightcoral;
+      }
+      #search:hover {
+        background-color: lightblue;
+      }
+      #history:hover {
+        background-color: lightcoral;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Search Engine</h1>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Enter your search term"
+      />
+      <button onclick="search()" id="search"><b>Search</b></button>
+      <button onclick="clearHistory()" id="history">
+        <b>Clear History</b>
+      </button>
+
+      <h2>Search History</h2>
+      <ul id="historyList"></ul>
+    </div>
+
+    <script>
+      let searchHistory =
+        JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+      window.onload = () => {
+        displayHistory();
+      };
+
+      function search() {
+        const input = document.getElementById("searchInput").value;
+
+        if (input.trim() === "") return;
+
+        searchHistory.push(input);
+        localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+
+        document.getElementById("searchInput").value = "";
+
+        displayHistory();
+      }
+
+      function displayHistory() {
+        const historyList = document.getElementById("historyList");
+        historyList.innerHTML = "";
+
+        searchHistory.forEach((term, index) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = term;
+          historyList.appendChild(listItem);
+        });
+      }
+
+      function clearHistory() {
+        searchHistory = [];
+        localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+        displayHistory();
+      }
+    </script>
+  </body>
+</html>
